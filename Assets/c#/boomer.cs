@@ -11,20 +11,25 @@ public class boomer : MonoBehaviour
     //public Transform s1,s2;
 
     [Range(0,1)]
-    public float moveSpeed = 1F;
+    public float moveSpeed = 0F;
     public float AddSpeed = 0.2F;
 
     public float speedOfSound = 340F;
     public float ma = 0.95F;
 
-    public float rotationSpeed = 15F;
+    public float rotationSpeed = 0.2F;
 
     float maxSpeed;
     float flyHigh;
 
+    public float zMaxRotation = 30;
+
     public float actHigh = 15200F;
 
-    public int flyingState = 0;//-:-1 0:0 +:1
+    public int flyingState = -1;//-1 0 1
+    public int higherTime = 2;
+    public float higherH = 500F;
+    public float highterAngle = 45F;
 
     void Start()
     {
@@ -42,6 +47,18 @@ public class boomer : MonoBehaviour
         // transform.Translate( 0, 0, moveSpeed * Time.deltaTime);
         flyCtrl();
         cameraMove();
+        attack();
+        showArea(Camera.main);
+    }
+    void showArea(Camera c1)
+    {
+        
+    }
+
+    void attack()
+    {
+        Transform header = this.transform.Find("head").transform;
+
     }
 
     void flyCtrl()
@@ -51,13 +68,16 @@ public class boomer : MonoBehaviour
         //     transform.position += transform.forward * speedOfSound * ma;
         //     transform.position += transform.up;
         // }
-        if(flyingState == 1)
+        if(flyingState >= 0)
         {
             // float to= Mathf.Lerp(0,speedOfSound * ma,0.5F);
             // transform.Translate( 0, 0, to * Time.deltaTime);
             transform.Translate( moveSpeed* maxSpeed*Vector3.forward,Space.Self);
+            if(transform.position.y<3000)
             transform.Translate(flyHigh*Vector3.up,Space.Self);
-            
+            // print(transform.rotation.eulerAngles.z);
+            // if(transform.rotation.eulerAngles.z != 0)
+                // transform.rotation = Quaternion.Euler(Vector3.Lerp(transform.rotation.eulerAngles, new Vector3(0,0,0), 0.05F));
         }
         // if(flyingState == -1)
         // {
@@ -66,25 +86,31 @@ public class boomer : MonoBehaviour
 
         if(Input.GetKey(KeyCode.W))
         {
-            flyingState = 1;
             if(moveSpeed < 1F)
-            moveSpeed += AddSpeed;
+            moveSpeed += AddSpeed * Time.deltaTime;
+            flyingState = 0;
+            
 
         }
         if(Input.GetKey(KeyCode.S))
         {
             // flyingState = -1;
-            if(moveSpeed>0F)
-            moveSpeed -= AddSpeed;
+            if(moveSpeed>0.2F)
+            moveSpeed -= AddSpeed * Time.deltaTime;
         }
 
         if(Input.GetKey(KeyCode.A))
         {
-            transform.Rotate(0,-rotationSpeed*Time.deltaTime,0);
+            transform.Rotate(0,-zMaxRotation*Time.deltaTime,0);
+            // transform.Rotate(0,0,10);
+            // if(transform.rotation.eulerAngles.z<=0)transform.Rotate(0,0,zMaxRotation*Time.deltaTime*rotationSpeed);
         }
         if(Input.GetKey(KeyCode.D))
         {
-            transform.Rotate(0,rotationSpeed*Time.deltaTime,0);
+            transform.Rotate(0,zMaxRotation*Time.deltaTime,0);
+            // transform.Rotate(0,0,-10);
+            // transform.rotation = Quaternion.Euler(Vector3.Lerp(transform.rotation.eulerAngles, new Vector3(0,0,-30), 0.05F)*Time.deltaTime);
+            // if(transform.rotation.eulerAngles.z>=0)transform.Rotate(0,0,-zMaxRotation*Time.deltaTime*rotationSpeed);
         }
     }
 

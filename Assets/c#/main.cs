@@ -9,15 +9,28 @@ public class main : MonoBehaviour
     public float movaSpeed = 0.02F;
     public Transform target;
 
+    public Transform targetLooAt;
+
+    public float mouseSpeed = 3F;
+
+    bool freeCrtl = false;
+
     void Start()
     {   
         print("game start ......");
         // Camera.main.gameObject.SetActive(false);
+        Cursor.visible = false;
+        Cursor.lockState=CursorLockMode.Confined;
         target = GameObject.Find("mainWarship").transform;
+        targetLooAt = target.transform.Find("b2_Stealth_Bomber").transform;
         // print(target.Find("Stealth_Bomber").transform.Find("boomerCamera").name);
         nextCamera =  target.Find("b2_Stealth_Bomber").transform.Find("boomerCamera").transform;//target.Find("cvwaitCamera/Stealth_Bomber/boomerCamera").transform;
                                                 // .gameObject.SetActive(true);
-        
+        // print(GameObject.Find("UIObject").transform.Find("ui").name);
+        GameObject.Find("UIObject").transform.Find("ui").gameObject.SetActive(true);
+
+        Camera.main.transform.forward = nextCamera.forward;
+        Camera.main.transform.rotation = nextCamera.rotation;
     }
 
     // Update is called once per frame
@@ -25,6 +38,8 @@ public class main : MonoBehaviour
     {
         cameraMove();
         // Camera.main.transform.LookAt(target);
+
+        
     }
 
     void cameraMove()
@@ -32,8 +47,8 @@ public class main : MonoBehaviour
         // Camera.main.tpransform.position += new Vector3(1,0,0);
         Vector3 mCp = Camera.main.transform.position;
         Vector3 nCp = nextCamera.position;
-        Vector3 mCr = Camera.main.transform.rotation.eulerAngles;
-        Vector3 nCr = nextCamera.rotation.eulerAngles;
+        // Vector3 mCr = Camera.main.transform.rotation.eulerAngles;
+        // Vector3 nCr = nextCamera.rotation.eulerAngles;
         
 
         // if(!isEqual(mCp,nCp))
@@ -55,12 +70,40 @@ public class main : MonoBehaviour
         //     // Camera.main.transform.rotation = nextCamera.rotation;
         // }
         Camera.main.transform.position = Vector3.Lerp(mCp, nCp, 0.05F);
-        Camera.main.transform.rotation = nextCamera.rotation;
-        Camera.main.transform.forward = nextCamera.forward;
+        if(!freeCrtl)
+        {
+            Camera.main.transform.forward = nextCamera.forward * Time.deltaTime;
+            Camera.main.transform.rotation = nextCamera.rotation ;//* Time.deltaTime;
+        }
+        
+        // Camera.main.transform.LookAt(targetLooAt);
         Camera.main.fieldOfView = 60;
         // print("now cv");
         // System.Threading.Thread.Sleep(2000);
         //  print("now cv2");
+
+
+        if(Input.GetMouseButton(1))
+        {
+            // print("mouse right ==> ");
+            // Camera.main.transform.forward = new Vector3(0,0,0);
+            // Camera.main.transform.LookAt();
+            // freeCrtl = true;
+            float mouseX = Input.GetAxis ("Mouse X") * mouseSpeed;
+            // print("mouse right ==> " + mouseX);
+            // Camera.main.transform.Rotate(new Vector3(0, mouseX, 0) ,Space.World);
+            Camera.main.transform.RotateAround(targetLooAt.position,targetLooAt.up,mouseX*mouseSpeed);
+        }
+        if(Input.GetMouseButtonUp(1))
+        {
+            freeCrtl = false;
+        }
+        if(Input.GetMouseButtonDown(1))
+        {
+            freeCrtl = true;
+        }
+
+
     }
 
     // bool isEqual(Vector3 n1, Vector3 n2)
