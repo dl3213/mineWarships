@@ -15,27 +15,40 @@ public class main : MonoBehaviour
 
     bool freeCrtl = false;
 
+    public AnimationCurve curve;
+    // public float dx = 0;
+
+    // Vector3 offset;
+
     void Start()
     {   
         print("game start ......");
+
+        //初始朝向
+
+
         // Camera.main.gameObject.SetActive(false);
         Cursor.visible = false;
-        Cursor.lockState=CursorLockMode.Confined;
-        target = GameObject.Find("mainWarship").transform;
-        targetLooAt = target.transform.Find("b2_Stealth_Bomber").transform;
-        // print(target.Find("Stealth_Bomber").transform.Find("boomerCamera").name);
-        nextCamera =  target.Find("b2_Stealth_Bomber").transform.Find("boomerCamera").transform;//target.Find("cvwaitCamera/Stealth_Bomber/boomerCamera").transform;
+        // Cursor.lockState=CursorLockMode.Confined;
+        // target = GameObject.Find("mainWarship").transform;
+        // targetLooAt = target.transform.Find("b2_Stealth_Bomber").transform;
+        // print(GameObject.Find("playerGO").transform.Find("pCamera").name);
+        nextCamera =  GameObject.Find("player").transform.Find("pCamera").transform;//target.Find("b2_Stealth_Bomber").transform.Find("boomerCamera").transform;//target.Find("cvwaitCamera/Stealth_Bomber/boomerCamera").transform;
                                                 // .gameObject.SetActive(true);
         // print(GameObject.Find("UIObject").transform.Find("ui").name);
         GameObject.Find("UIObject").transform.Find("ui").gameObject.SetActive(true);
 
         Camera.main.transform.forward = nextCamera.forward;
         Camera.main.transform.rotation = nextCamera.rotation;
+
+        // offset = Camera.main.transform.position-target.position;
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Vector3 offset = target.position-transform.position;
+        // Camera.main.transform.position = target.position + offset;
         cameraMove();
         // Camera.main.transform.LookAt(target);
 
@@ -73,7 +86,7 @@ public class main : MonoBehaviour
         if(!freeCrtl)
         {
             Camera.main.transform.forward = nextCamera.forward * Time.deltaTime;
-            Camera.main.transform.rotation = nextCamera.rotation ;//* Time.deltaTime;
+            // Camera.main.transform.rotation = nextCamera.rotation ;//* Time.deltaTime;
         }
         
         // Camera.main.transform.LookAt(targetLooAt);
@@ -85,6 +98,7 @@ public class main : MonoBehaviour
 
         if(Input.GetMouseButton(1))
         {
+            
             // print("mouse right ==> ");
             // Camera.main.transform.forward = new Vector3(0,0,0);
             // Camera.main.transform.LookAt();
@@ -92,7 +106,12 @@ public class main : MonoBehaviour
             float mouseX = Input.GetAxis ("Mouse X") * mouseSpeed;
             // print("mouse right ==> " + mouseX);
             // Camera.main.transform.Rotate(new Vector3(0, mouseX, 0) ,Space.World);
+            // Camera.main.transform.rotation = Quaternion.LookRotation(targetLooAt.position-Camera.main.transform.position);==lookat
             Camera.main.transform.RotateAround(targetLooAt.position,targetLooAt.up,mouseX*mouseSpeed);
+            // Camera.main.transform.rotation = Quaternion.LookRotation(targetLooAt.position-Camera.main.transform.position);
+            // Quaternion dir = Quaternion.LookRotation(tp-cp);
+            // Quaternion.Lerp(Camera.main.transform.rotation,dir,0.1f);
+
         }
         if(Input.GetMouseButtonUp(1))
         {

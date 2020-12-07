@@ -13,12 +13,14 @@ public class ui : MonoBehaviour
     {
         slider = this.transform.Find("Slider");
         // print(fly.GetComponent<boomer>().moveSpeed);
+        slider.GetComponent<Slider>().maxValue = fly.GetComponent<F18>().MaMax;
     }
 
     // Update is called once per frame
     void Update()
     {
-        slider.GetComponent<Slider>().value = fly.GetComponent<boomer>().moveSpeed;
+        slider.GetComponent<Slider>().value = fly.GetComponent<F18>().Ma;
+        
     }
 
     public void speedChange()
