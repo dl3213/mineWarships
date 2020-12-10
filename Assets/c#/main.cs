@@ -5,9 +5,15 @@ using UnityEngine;
 public class main : MonoBehaviour
 {
     // Start is called before the first frame update
-    Transform nextCamera;
-    public float movaSpeed = 0.02F;
+    // Transform nextCamera;
+    // public float movaSpeed = 0.02F;
     public Transform target;
+
+    public Transform nCamera;
+
+    // public bool isFollow = false;
+
+    // Vector3 offDir;
 
     public Transform targetLooAt;
 
@@ -15,7 +21,7 @@ public class main : MonoBehaviour
 
     bool freeCrtl = false;
 
-    public AnimationCurve curve;
+    // public AnimationCurve curve;
     // public float dx = 0;
 
     // Vector3 offset;
@@ -29,17 +35,21 @@ public class main : MonoBehaviour
 
         // Camera.main.gameObject.SetActive(false);
         Cursor.visible = false;
+        Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView,60,.5F);
+
+
+
         // Cursor.lockState=CursorLockMode.Confined;
         // target = GameObject.Find("mainWarship").transform;
         // targetLooAt = target.transform.Find("b2_Stealth_Bomber").transform;
         // print(GameObject.Find("playerGO").transform.Find("pCamera").name);
-        nextCamera =  GameObject.Find("player").transform.Find("pCamera").transform;//target.Find("b2_Stealth_Bomber").transform.Find("boomerCamera").transform;//target.Find("cvwaitCamera/Stealth_Bomber/boomerCamera").transform;
-                                                // .gameObject.SetActive(true);
-        // print(GameObject.Find("UIObject").transform.Find("ui").name);
+        // nextCamera =  GameObject.Find("player").transform.Find("pCamera").transform;//target.Find("b2_Stealth_Bomber").transform.Find("boomerCamera").transform;//target.Find("cvwaitCamera/Stealth_Bomber/boomerCamera").transform;
+        //                                         // .gameObject.SetActive(true);
+        // // print(GameObject.Find("UIObject").transform.Find("ui").name);
         GameObject.Find("UIObject").transform.Find("ui").gameObject.SetActive(true);
 
-        Camera.main.transform.forward = nextCamera.forward;
-        Camera.main.transform.rotation = nextCamera.rotation;
+        Camera.main.transform.forward = nCamera.forward;
+        Camera.main.transform.rotation = nCamera.rotation;
 
         // offset = Camera.main.transform.position-target.position;
     }
@@ -47,6 +57,38 @@ public class main : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+        // Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView,60,2F*Time.deltaTime);
+        // float nowFV = Camera.main.fieldOfView;
+        // if(Mathf.Abs(60-nowFV)<0.5F)
+        // {
+        //     Camera.main.fieldOfView=60;
+        // }
+
+        // Camera.main.transform.position = Vector3.Lerp(transform.position,nCamera.position,.5F);
+        // Camera.main.transform.rotation = Quaternion.Lerp(transform.rotation,nCamera.rotation,.5F);
+        
+        // Vector3 cDir = transform.position - nCamera.position;
+        // if(cDir.magnitude<0.1F && !isFollow)
+        // {
+        //     print("camera ready ......");
+        //     Camera.main.transform.position = nCamera.position;
+        //     Camera.main.transform.rotation = nCamera.rotation;
+            
+        //     isFollow = true;
+        //     offDir = transform.position - target.position;
+        // }
+
+        // offDir = transform.position - target.position;
+
+        // if(isFollow){
+        //     print("camera following ......");
+        //     // Vector3 offDir = transform.position - target.position;
+        //     transform.position = offDir + target.position;
+        //     // transform.rotation = 
+        //     // transform.Rotate(0,-15*Time.deltaTime,0);
+        // }
+        
         // Vector3 offset = target.position-transform.position;
         // Camera.main.transform.position = target.position + offset;
         cameraMove();
@@ -59,7 +101,7 @@ public class main : MonoBehaviour
     {
         // Camera.main.tpransform.position += new Vector3(1,0,0);
         Vector3 mCp = Camera.main.transform.position;
-        Vector3 nCp = nextCamera.position;
+        Vector3 nCp = nCamera.position;
         // Vector3 mCr = Camera.main.transform.rotation.eulerAngles;
         // Vector3 nCr = nextCamera.rotation.eulerAngles;
         
@@ -85,7 +127,7 @@ public class main : MonoBehaviour
         Camera.main.transform.position = Vector3.Lerp(mCp, nCp, 0.05F);
         if(!freeCrtl)
         {
-            Camera.main.transform.forward = nextCamera.forward * Time.deltaTime;
+            Camera.main.transform.forward = nCamera.forward * Time.deltaTime;
             // Camera.main.transform.rotation = nextCamera.rotation ;//* Time.deltaTime;
         }
         
@@ -107,7 +149,7 @@ public class main : MonoBehaviour
             // print("mouse right ==> " + mouseX);
             // Camera.main.transform.Rotate(new Vector3(0, mouseX, 0) ,Space.World);
             // Camera.main.transform.rotation = Quaternion.LookRotation(targetLooAt.position-Camera.main.transform.position);==lookat
-            Camera.main.transform.RotateAround(targetLooAt.position,targetLooAt.up,mouseX*mouseSpeed);
+            Camera.main.transform.RotateAround(target.position,target.up,mouseX*mouseSpeed);
             // Camera.main.transform.rotation = Quaternion.LookRotation(targetLooAt.position-Camera.main.transform.position);
             // Quaternion dir = Quaternion.LookRotation(tp-cp);
             // Quaternion.Lerp(Camera.main.transform.rotation,dir,0.1f);

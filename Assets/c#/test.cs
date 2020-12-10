@@ -15,8 +15,9 @@ public class test : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        print("testing ......");
         // target = this.transform.Find("Cube").transform;
-        offset = transform.position - target.position;//计算相对距离
+        // offset = transform.position - target.position;//计算相对距离
     }
 
     void OnGUI()
@@ -32,7 +33,18 @@ public class test : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = target.position + offset;
+        {
+            float hor = Input.GetAxis("Horizontal");
+            float ver = Input.GetAxis("Vertical");
+            Quaternion dir = Quaternion.LookRotation(new Vector3(hor,0,ver));
+            transform.rotation = //dir;
+                                Quaternion.Lerp(transform.rotation,dir,Time.deltaTime*10);
+
+            if(hor!=0||ver!=0)
+            transform.Translate(0,0,Time.deltaTime*10);//自身向前走
+        }
+
+        // transform.position = target.position + offset;
 
         // if()
 

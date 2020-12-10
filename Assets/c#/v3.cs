@@ -46,5 +46,9 @@ public class v3 : MonoBehaviour
         //x正方向 -> 注视目标位置的方向
         // dir = Quaternion.FromToRotation(Vector3.right,tf.pos - transform.position)
         // transform.rotation = dir//lerp
+
+        //unity 贝塞尔
+        
+        //参数方程
     }
 }
